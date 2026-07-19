@@ -1,0 +1,6 @@
+{
+  "name": "Sumera Collections",
+  "description": "Premium D2C Indian Women's Ethnic & Fusion Wear Storefront featuring Kurtis, Plazzo Sets, and Dress Materials.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

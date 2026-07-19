@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default Safety Net: Deny everything by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Products Catalog: Public reads, write/delete restricted with correct PIN
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.adminPin == '990859';
+      allow delete: if resource.data.adminPin == '990859';
+    }
+
+    // 3. User Specific Private Folders (Cart, Wishlist, Profile, Points, and Local Orders)
+    // Secure unauthenticated access: allow individual document access (get/create/update) but deny collection listing (list) or deletion.
+    // This implements secure guest session profiles via high-entropy IDs stored in the user's browser.
+    match /users/{userId}/{document=**} {
+      allow get, create, update: if true;
+      allow list, delete: if false;
+    }
+
+    // 4. Global Orders: Public read/create and update restricted with correct PIN, no deletion
+    match /global_orders/{orderId} {
+      allow read, create: if true;
+      allow update: if request.resource.data.adminPin == '990859';
+      allow delete: if false;
+    }
+
+    // 5. Return Requests: Public read/create and update restricted with correct PIN, no deletion
+    match /return_requests/{requestId} {
+      allow read, create: if true;
+      allow update: if request.resource.data.adminPin == '990859';
+      allow delete: if false;
+    }
+
+    // 6. Settings: Public customized layout settings, update restricted with correct PIN
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if request.resource.data.adminPin == '990859';
+    }
+  }
+}
