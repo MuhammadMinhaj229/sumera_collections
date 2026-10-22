@@ -6,6 +6,19 @@ Live deployment: https://sumeeracollections.vercel.app
 
 ---
 
+## Architecture Flow
+
+```mermaid
+flowchart LR
+    Visitor["Store Visitor"] --> Storefront["React + Vite Catalog"]
+    Storefront --> Gemini["Google Gemini GenAI Search"]
+    Storefront --> Firestore[("Firestore Real-Time Inventory")]
+    Gemini --> Filtered["Contextual Outfit Recommendations"]
+    Filtered --> WhatsApp["Pre-filled WhatsApp Checkout"]
+```
+
+---
+
 ## Overview
 
 Sumera Collections is a responsive web application designed for boutique fashion retail. It replaces static inventory listings with dynamic catalog browsing, category filtering, and direct customer WhatsApp inquiry routing.
